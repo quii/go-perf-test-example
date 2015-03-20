@@ -1,4 +1,4 @@
-# Go perf test example
+# Go perf test example [![GoDoc](https://godoc.org/github.com/quii/go-perf-test-example?status.svg)](https://godoc.org/github.com/quii/go-perf-test-example)
 
 Code will be accompanied by a blog (TODO). 
 
