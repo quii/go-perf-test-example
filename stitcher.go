@@ -1,8 +1,8 @@
-package main
+// Package stitcher is a simple of example of using Go's tools to produce well tested, performant software
+package stitcher
 
 import (
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -51,8 +51,4 @@ func getStringFromAPI(ch chan<- *apiResult, url string) {
 			ch <- &apiResult{string(content), nil}
 		}
 	}
-}
-
-func main() {
-	fmt.Println(Stitcher("foo", "url"))
 }
