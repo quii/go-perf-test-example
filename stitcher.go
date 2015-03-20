@@ -10,8 +10,7 @@ import (
 const wordSeparator = ", "
 const errorMsg = "ALL OTHER SOFTWARE TEAMS ARE USELESS, OUTSOURCING IS A SHAM"
 
-// APIResult holds the result of a call to one of our wonderful external APIs
-type APIResult struct {
+type apiResult struct {
 	content string
 	err     error
 }
@@ -19,8 +18,8 @@ type APIResult struct {
 // Stitcher calls the Hello and World APIs to create a very useful string
 func Stitcher(helloURL string, worldURL string) string {
 
-	helloChannel := make(chan *APIResult, 1)
-	worldChannel := make(chan *APIResult, 1)
+	helloChannel := make(chan *apiResult, 1)
+	worldChannel := make(chan *apiResult, 1)
 
 	go getStringFromAPI(helloChannel, helloURL)
 	go getStringFromAPI(worldChannel, worldURL)
@@ -35,21 +34,21 @@ func Stitcher(helloURL string, worldURL string) string {
 	return helloResult.content + wordSeparator + worldResult.content
 }
 
-func getStringFromAPI(ch chan<- *APIResult, url string) {
+func getStringFromAPI(ch chan<- *apiResult, url string) {
 	response, err := http.Get(url)
 
 	if err != nil {
-		ch <- &APIResult{"", err}
+		ch <- &apiResult{"", err}
 	} else {
 		defer response.Body.Close()
 		content, err := ioutil.ReadAll(response.Body)
 
 		if err != nil {
-			ch <- &APIResult{"", err}
+			ch <- &apiResult{"", err}
 		} else if response.StatusCode != http.StatusOK {
-			ch <- &APIResult{"", errors.New("Non 200 response from API")}
+			ch <- &apiResult{"", errors.New("Non 200 response from API")}
 		} else {
-			ch <- &APIResult{string(content), nil}
+			ch <- &apiResult{string(content), nil}
 		}
 	}
 }
